@@ -1,0 +1,13 @@
+/home/phil/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/phil/.local/share/JetBrains/Toolbox/apps/clion/bin/ninja/linux/x64/ninja -G Ninja -S "/home/phil/Documents/CLion Projects/DapperUI" -B "/home/phil/Documents/CLion Projects/DapperUI/cmake-build-debug"
+-- Configuring done (0.1s)
+CMake Error at CMakeLists.txt:6 (add_executable):
+  Cannot find source file:
+
+    src/Systems/TextureManager.h
+
+
+CMake Error at CMakeLists.txt:6 (add_executable):
+  No SOURCES given to target: DapperUI
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.

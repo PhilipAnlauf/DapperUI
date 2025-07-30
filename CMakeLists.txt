@@ -17,4 +17,5 @@ add_executable(
         src/UI/Button.h
         src/UI/UIElement.cpp
         src/UI/UIElement.cpp
-        src/UI/Registrar.h)
+        src/UI/Registrar.h
+        src/UI/Checkbox.h)

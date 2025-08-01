@@ -2,11 +2,14 @@
 #include "UIElement.h"
 #include <string>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <functional>
 
 class Button : public UIElement
 {
 	private:
+		TTF_Font* font = nullptr;
+		std::string buttonText;
 		int radius = 0;
 		int x,y,w,h;
 		bool isAnimating = false;
@@ -34,6 +37,29 @@ class Button : public UIElement
 			offX = offsetX;
 			offY = offsetY;
 			shadowColor.r = sr, shadowColor.g = sg, shadowColor.b = sb, shadowColor.a = sa;
+		}
+
+		void setText(const int& offsetX=0, const int& offsetY=0, const std::string& text=nullptr, const int& ptsize=24)
+		{
+			if (font == nullptr)
+			{
+				if (TTF_Init() == -1) {
+					std::cerr << "TTF_Init: " << TTF_GetError() << std::endl;
+					SDL_Quit();
+					return;
+				}
+
+				// Check absolute or relative path based on your file location
+				font = TTF_OpenFont("UI/fonts/Roboto.ttf", ptsize); // Adjust the path accordingly
+				if (font == NULL) {
+					std::cerr << "TTF_OpenFont failed: " << TTF_GetError() << std::endl;
+					TTF_Quit();
+					return;
+				}
+				std::cout << "Font loaded successfully!" << std::endl;
+			}
+
+			buttonText = text;
 		}
 
 		void update(const float deltaTime) override
@@ -138,6 +164,27 @@ class Button : public UIElement
 			{
 				SDL_RenderFillRect(renderer, &rect);
 			}
+
+			//writing text
+			if (!buttonText.empty() && buttonText.length() > 0)
+			{
+				SDL_Color textColor = {255, 255, 255};
+				SDL_Surface* textSurface = TTF_RenderText_Solid(font, buttonText.c_str(), textColor);
+				SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+				int textW = textSurface->w;
+				int textH = textSurface->h;
+
+				SDL_Rect textRect = {x, y, textW, textH};
+
+				textRect.x = x + (w - textW) / 2;
+				textRect.y = y + (h - textH) / 2;
+
+				SDL_FreeSurface(textSurface);
+				SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
+				SDL_DestroyTexture(textTexture);
+			}
+
 
 		}
 

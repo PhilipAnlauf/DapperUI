@@ -27,6 +27,7 @@ add_executable(
         src/UI/UIElement.cpp
         src/UI/Registrar.h
         src/UI/Checkbox.h
+        src/UI/TextBox.h
 )
 
 target_link_libraries(DapperUI ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES})

@@ -10,22 +10,29 @@ class Button : public UIElement
 	private:
 		TTF_Font* font = nullptr;
 		std::string buttonText;
-		int radius = 0;
 		int x,y,w,h;
 		bool isAnimating = false;
 		float animationTimer = 0.0f;
 		SDL_Color idleColor = { 120, 120, 120, 255};
 		SDL_Color activeColor = { 90, 90, 90, 255};
 		SDL_Color shadowColor = { 0, 0, 0, 255};
+		SDL_Color outlineColor = { 0, 0, 0, 255};
+		SDL_Color textColor = { 0, 0, 0, 255};
 		int offX = 0, offY = 0;
+		int outlineThickness = 0;
 
 	public:
 		std::function<void()> onClick;
 
-		Button (int bx, int by, int bw, int bh, int br=0)
+		Button (int bx, int by, int bw, int bh, int ot=0)
 		{
-			x = bx, y = by, w = bw, h = bh, radius = br;
+			x = bx, y = by, w = bw, h = bh, outlineThickness = ot;
 			rect.x = bx, rect.y = by, rect.h = bh, rect.w = bw;
+		}
+
+		void setTextColor(int r, int g, int b)
+		{
+			textColor.r = r, textColor.g = g, textColor.b = b;
 		}
 
 		void setIdleColor(int r, int g, int b, int a) { idleColor.r = r, idleColor.g = g, idleColor.b = b, idleColor.a = a; }
@@ -37,6 +44,12 @@ class Button : public UIElement
 			offX = offsetX;
 			offY = offsetY;
 			shadowColor.r = sr, shadowColor.g = sg, shadowColor.b = sb, shadowColor.a = sa;
+		}
+
+		void modifyOutline(const int& thickness, const int& otr, const int& otg, const int& otb, const int& ota=255)
+		{
+			outlineThickness = thickness;
+			outlineColor.r = otr, outlineColor.g = otg, outlineColor.b = otb, outlineColor.a = ota;
 		}
 
 		void setText(const int& offsetX=0, const int& offsetY=0, const std::string& text=nullptr, const int& ptsize=24)
@@ -75,69 +88,21 @@ class Button : public UIElement
 			}
 		};
 
-		static void DrawCircle(SDL_Renderer* renderer, int centerX, int centerY, int radius)
-		{
-			int x = radius;
-			int y = 0;
-			int err = 0;
-
-			while (x >= y)
-			{
-				SDL_RenderDrawPoint(renderer, centerX + x, centerY + y);
-				SDL_RenderDrawPoint(renderer, centerX + y, centerY + x);
-				SDL_RenderDrawPoint(renderer, centerX - y, centerY + x);
-				SDL_RenderDrawPoint(renderer, centerX - x, centerY + y);
-				SDL_RenderDrawPoint(renderer, centerX - x, centerY - y);
-				SDL_RenderDrawPoint(renderer, centerX - y, centerY - x);
-				SDL_RenderDrawPoint(renderer, centerX + y, centerY - x);
-				SDL_RenderDrawPoint(renderer, centerX + x, centerY - y);
-
-				y += 1;
-				if (err <= 0)
-				{
-					err += 2 * y + 1;
-				}
-				if (err > 0)
-				{
-					x -= 1;
-					err -= 2 * x + 1;
-				}
-			}
-		}
-
-		static void FillCircle(SDL_Renderer* renderer, int centerX, int centerY, int radius)
-		{
-			for (int y = -radius; y <= radius; y++)
-			{
-				int dx = (int)sqrt(radius * radius - y * y);
-				int x1 = centerX - dx;
-				int x2 = centerX + dx;
-
-				SDL_RenderDrawLine(renderer, x1, centerY + y, x2, centerY + y);
-			}
-		}
-
 		void render(SDL_Renderer* renderer) override
 		{
 			//Drawing button shadow first
-			SDL_SetRenderDrawColor(renderer, shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a);
-			if (radius > 0)
+			if (offX != 0 && offY != 0)
 			{
-				FillCircle(renderer, x+radius+offX, y+radius+offY, radius);
-				FillCircle(renderer, x+w-radius+offX, y+radius+offY, radius);
-				FillCircle(renderer, x+radius+offX, y+h-radius+offY, radius);
-				FillCircle(renderer, x+w-radius+offX, y+h-radius+offY, radius);
-
-				const SDL_Rect shadowVerticalRect = { x + radius+offX, y + offY, w - 2 * radius, h };
-				SDL_RenderFillRect(renderer, &shadowVerticalRect);
-
-				const SDL_Rect shadowHorizontalRect = { x + offX, y + radius + offY, w, h - 2 * radius };
-				SDL_RenderFillRect(renderer, &shadowHorizontalRect);
-			}
-			else
-			{
-				SDL_Rect shadowRect = { rect.x + offX, rect.y + offY, rect.w, rect.h };
+				SDL_SetRenderDrawColor(renderer, shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a);
+				const SDL_Rect shadowRect = { rect.x + offX, rect.y + offY, rect.w+outlineThickness, rect.h+outlineThickness };
 				SDL_RenderFillRect(renderer, &shadowRect);
+			}
+
+			if (outlineThickness > 0)
+			{
+				SDL_SetRenderDrawColor(renderer, outlineColor.r, outlineColor.g, outlineColor.b, outlineColor.a);
+				const SDL_Rect outlineRect = { rect.x-outlineThickness, rect.y-outlineThickness, rect.w+(2*outlineThickness), rect.h+(2*outlineThickness)};
+				SDL_RenderFillRect(renderer, &outlineRect);
 			}
 
 			//Drawing actual button
@@ -147,29 +112,13 @@ class Button : public UIElement
 								   isAnimating ? activeColor.b : idleColor.b,
 								   255);
 
-			if (radius > 0)
-			{
-				FillCircle(renderer, x+radius, y+radius, radius);
-				FillCircle(renderer, x+w-radius, y+radius, radius);
-				FillCircle(renderer, x+radius, y+h-radius, radius);
-				FillCircle(renderer, x+w-radius, y+h-radius, radius);
-
-				const SDL_Rect vertical = { x + radius, y, w - 2 * radius, h };
-				SDL_RenderFillRect(renderer, &vertical);
-
-				const SDL_Rect horizontal = { x, y + radius, w, h - 2 * radius };
-				SDL_RenderFillRect(renderer, &horizontal);
-			}
-			else
-			{
-				SDL_RenderFillRect(renderer, &rect);
-			}
+			SDL_RenderFillRect(renderer, &rect);
 
 			//writing text
-			if (!buttonText.empty() && buttonText.length() > 0)
+			if (!buttonText.empty())
 			{
-				SDL_Color textColor = {255, 255, 255};
-				SDL_Surface* textSurface = TTF_RenderText_Solid(font, buttonText.c_str(), textColor);
+				SDL_Color textRenderColor = {textColor.r, textColor.g, textColor.b};
+				SDL_Surface* textSurface = TTF_RenderText_Solid(font, buttonText.c_str(), textRenderColor);
 				SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
 				int textW = textSurface->w;

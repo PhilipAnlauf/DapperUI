@@ -6,6 +6,7 @@ class DapperCore
 	private:
 		int appW, appH;
 		std::string appName;
+		SDL_Color backgroundColor = {255,255,255,255 };
 
 	public:
 		static bool running;
@@ -13,6 +14,11 @@ class DapperCore
 		static inline ElementManager* elementManager;
 		SDL_Window* window;
 		static inline SDL_Renderer* renderer;
+
+		void setBackgroundColor(int r, int g, int b)
+		{
+			backgroundColor.r = r, backgroundColor.g = g, backgroundColor.b = b;
+		}
 
 		DapperCore() : appW(800), appH(600), appName("DapperUI Application")
 		{
@@ -52,7 +58,7 @@ class DapperCore
 
 		bool update(float deltaTime)
 		{
-			SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+			SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 			SDL_RenderClear(renderer);
 
 			elementManager->renderObjects(renderer);

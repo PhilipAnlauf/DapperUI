@@ -14,8 +14,10 @@ class TextBox : public UIElement
 		SDL_Color backGroundColor = { 255, 255, 255, 255};
 		SDL_Color outLineColor = { 0, 0, 0, 255};
 		SDL_Color shadowColor = { 0, 0, 0, 128};
+		SDL_Color textColor = { 0, 0, 0, 255};
 		int offX = 0, offY = 0;
 		int borderWidth = 0;
+		int padding = 5;
 
 	public:
 		std::function<void()> onClick;
@@ -24,6 +26,11 @@ class TextBox : public UIElement
 		{
 			x = bx, y = by, w = bw, h = bh, borderWidth = brw;
 			rect.x = bx, rect.y = by, rect.h = bh, rect.w = bw;
+		}
+
+		void setTextColor(int r, int g, int b, int a=255)
+		{
+			textColor.r = r, textColor.g = g, textColor.b = b, textColor.a = a;
 		}
 
 		void setBackGroundColor(int r, int g, int b, int a) { backGroundColor.r = r, backGroundColor.g = g, backGroundColor.b = b, backGroundColor.a = a; }
@@ -74,10 +81,12 @@ class TextBox : public UIElement
 			SDL_RenderFillRect(renderer, &rect);
 
 			//writing text
-			if (!boxText.empty() && boxText.length() > 0)
+			if (!boxText.empty())
 			{
-				SDL_Color textColor = {255, 255, 255};
-				SDL_Surface* textSurface = TTF_RenderText_Solid(font, boxText.c_str(), textColor);
+				const SDL_Color textRenderColor = {textColor.r, textColor.g, textColor.b, textColor.a};
+
+				int wrapLength = w - 2 * padding;
+				SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(font, boxText.c_str(), textRenderColor, wrapLength);
 				SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
 				int textW = textSurface->w;
@@ -85,8 +94,11 @@ class TextBox : public UIElement
 
 				SDL_Rect textRect = {x, y, textW, textH};
 
-				textRect.x = x + (w - textW) / 2;
-				textRect.y = y + (h - textH) / 2;
+				// textRect.x = x + (w - textW) / 2;
+				// textRect.y = y + (h - textH) / 2;
+
+				textRect.x = x + padding;
+				textRect.y = y + padding;
 
 				SDL_FreeSurface(textSurface);
 				SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);

@@ -3,13 +3,13 @@
 #include <vector>
 #include <memory>
 #include <SDL2/SDL_events.h>
-
-#include "../UI/UIElement.h"
+#include "UIElement.h"
+#include <iostream>
 
 class ElementManager
 {
 private:
-	std::vector<std::unique_ptr<UIElement>> elements{};
+	std::vector<std::unique_ptr<DapperUI::UIElement>> elements{};
 public:
 
 	static SDL_DisplayMode getDisplayModeDimensions()
@@ -25,7 +25,7 @@ public:
 		return mode;
 	}
 
-	void addElement(std::unique_ptr<UIElement> object)
+	void addElement(std::unique_ptr<DapperUI::UIElement> object)
 	{
 		elements.push_back(std::move(object));
 	}

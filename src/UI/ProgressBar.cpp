@@ -1,58 +1,37 @@
-#pragma once
-#include "UIElement.h"
-#include <string>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <functional>
+#include "../../include/DapperUI/ProgressBar.h"
+#include <iostream>
 
-class ProgressBar : public UIElement
+namespace DapperUI
 {
-	private:
-		TTF_Font* font = nullptr;
-		int x,y,w,h;
-		bool isAnimating = false;
-		float animationTimer = 0.0f;
-		SDL_Color backGroundColor = { 120, 120, 120, 255};
-		SDL_Color progressColor = { 90, 90, 90, 255};
-		SDL_Color shadowColor = { 0, 0, 0, 255};
-		SDL_Color outlineColor = { 0, 0, 0, 255};
-		int offX = 0, offY = 0;
-		int outlineThickness = 0;
-
-		int progressPercentage = 0;
-
-	public:
-		std::function<void()> onClick;
-
-		ProgressBar (int bx, int by, int bw, int bh, int ot=0)
+		ProgressBar::ProgressBar (int bx, int by, int bw, int bh, int ot)
 		{
 			x = bx, y = by, w = bw, h = bh, outlineThickness = ot;
 			rect.x = bx, rect.y = by, rect.h = bh, rect.w = bw;
 		}
 
-		void setBackGroundColor(int r, int g, int b, int a) { backGroundColor.r = r, backGroundColor.g = g, backGroundColor.b = b, backGroundColor.a = a; }
+		void ProgressBar::setBackGroundColor(int r, int g, int b, int a) { backGroundColor.r = r, backGroundColor.g = g, backGroundColor.b = b, backGroundColor.a = a; }
 
-		void setProgressColor(int r, int g, int b, int a) { progressColor.r = r, progressColor.g = g, progressColor.b = b, progressColor.a = a; }
+		void ProgressBar::setProgressColor(int r, int g, int b, int a) { progressColor.r = r, progressColor.g = g, progressColor.b = b, progressColor.a = a; }
 
-	    void modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa)
+	    void ProgressBar::modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa)
 		{
 			offX = offsetX;
 			offY = offsetY;
 			shadowColor.r = sr, shadowColor.g = sg, shadowColor.b = sb, shadowColor.a = sa;
 		}
 
-		void increaseByIntpercent(int percentage)
+		void ProgressBar::increaseByIntPercent(int percentage)
 		{
 			progressPercentage += percentage;
 		}
 
-		void modifyOutline(const int& thickness, const int& otr, const int& otg, const int& otb, const int& ota=255)
+		void ProgressBar::modifyOutline(const int& thickness, const int& otr, const int& otg, const int& otb, const int& ota)
 		{
 			outlineThickness = thickness;
 			outlineColor.r = otr, outlineColor.g = otg, outlineColor.b = otb, outlineColor.a = ota;
 		}
 
-		void update(const float deltaTime) override
+		void ProgressBar::update(const float deltaTime)
 		{
 			if (isAnimating)
 			{
@@ -65,7 +44,7 @@ class ProgressBar : public UIElement
 			}
 		};
 
-		void render(SDL_Renderer* renderer) override
+		void ProgressBar::render(SDL_Renderer* renderer)
 		{
 			//Drawing button shadow first
 			if (offX != 0 && offY != 0)
@@ -101,7 +80,7 @@ class ProgressBar : public UIElement
 			}
 		}
 
-		void handleEvent(const SDL_Event& event) override
+		void ProgressBar::handleEvent(const SDL_Event& event)
 		{
 			int mouseX, mouseY;
 			SDL_GetMouseState(&mouseX, &mouseY);

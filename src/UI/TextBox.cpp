@@ -1,70 +1,53 @@
-#pragma once
-#include "UIElement.h"
-#include <string>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <functional>
+#include "../../include/DapperUI/TextBox.h"
+#include <iostream>
 
-class TextBox : public UIElement
+namespace DapperUI
 {
-	private:
-		TTF_Font* font = nullptr;
-		std::string boxText;
-		int x,y,w,h;
-		SDL_Color backGroundColor = { 255, 255, 255, 255};
-		SDL_Color outLineColor = { 0, 0, 0, 255};
-		SDL_Color shadowColor = { 0, 0, 0, 128};
-		SDL_Color textColor = { 0, 0, 0, 255};
-		int offX = 0, offY = 0;
-		int borderWidth = 0;
-		int padding = 5;
-
-	public:
 		std::function<void()> onClick;
 
-		TextBox (int bx, int by, int bw, int bh, int brw=0)
+		TextBox::TextBox (int bx, int by, int bw, int bh, int brw)
 		{
 			x = bx, y = by, w = bw, h = bh, borderWidth = brw;
 			rect.x = bx, rect.y = by, rect.h = bh, rect.w = bw;
 		}
 
-		void setTextColor(int r, int g, int b, int a=255)
+		void TextBox::setTextColor(int r, int g, int b, int a)
 		{
 			textColor.r = r, textColor.g = g, textColor.b = b, textColor.a = a;
 		}
 
-		void setBackGroundColor(int r, int g, int b, int a) { backGroundColor.r = r, backGroundColor.g = g, backGroundColor.b = b, backGroundColor.a = a; }
+		void TextBox::setBackGroundColor(int r, int g, int b, int a) { backGroundColor.r = r, backGroundColor.g = g, backGroundColor.b = b, backGroundColor.a = a; }
 
-	    void modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa)
+	    void TextBox::modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa)
 		{
 			offX = offsetX;
 			offY = offsetY;
 			shadowColor.r = sr, shadowColor.g = sg, shadowColor.b = sb, shadowColor.a = sa;
 		}
 
-		void setText(const int& offsetX=0, const int& offsetY=0, const std::string& text=nullptr, const int& ptsize=24)
+		void TextBox::setText(const int& offsetX, const int& offsetY, const std::string& text, const int& ptsize)
 		{
 			if (font == nullptr)
 			{
 				if (TTF_Init() == -1) {
-					std::cerr << "TTF_Init: " << TTF_GetError() << std::endl;
+					//std::cerr << "TTF_Init: " << TTF_GetError() << std::endl;
 					SDL_Quit();
 					return;
 				}
 
-				font = TTF_OpenFont("UI/fonts/Roboto.ttf", ptsize);
+				font = TTF_OpenFont("fonts/Roboto.ttf", ptsize);
 				if (font == NULL) {
-					std::cerr << "TTF_OpenFont failed: " << TTF_GetError() << std::endl;
+					//std::cerr << "TTF_OpenFont failed: " << TTF_GetError() << std::endl;
 					TTF_Quit();
 					return;
 				}
-				std::cout << "Font loaded successfully!" << std::endl;
+				//std::cout << "Font loaded successfully!" << std::endl;
 			}
 
 			boxText = text;
 		}
 
-		void render(SDL_Renderer* renderer) override
+		void TextBox::render(SDL_Renderer* renderer)
 		{
 			//Drawing shadow box
 			SDL_SetRenderDrawColor(renderer, shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a);
@@ -108,6 +91,6 @@ class TextBox : public UIElement
 
 		}
 
-		void handleEvent(const SDL_Event& event) override { }
-		void update(float deltaTime) override { }
+		void TextBox::handleEvent(const SDL_Event& event)  { }
+		void TextBox::update(float deltaTime)  { }
 };

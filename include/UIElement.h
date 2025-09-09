@@ -12,6 +12,7 @@ namespace DapperUI
         public:
             virtual ~UIElement() = default;
 
+            //All Objects are a form of rectangle
             SDL_Rect rect {};
             bool active = true;
 

@@ -2,15 +2,15 @@
 
 namespace DapperUI
 {
-		ProgressBar::ProgressBar (int bx, int by, int bw, int bh, int ot)
+		ProgressBar::ProgressBar (const int bx, const int by, const int bw, const int bh, const int ot)
 		{
 			x = bx, y = by, w = bw, h = bh, outlineThickness = ot;
 			rect.x = bx, rect.y = by, rect.h = bh, rect.w = bw;
 		}
 
-		void ProgressBar::setBackGroundColor(int r, int g, int b, int a) { backGroundColor.r = r, backGroundColor.g = g, backGroundColor.b = b, backGroundColor.a = a; }
+		void ProgressBar::setBackGroundColor(const int r, const int g, const int b, const int a) { backGroundColor.r = r, backGroundColor.g = g, backGroundColor.b = b, backGroundColor.a = a; }
 
-		void ProgressBar::setProgressColor(int r, int g, int b, int a) { progressColor.r = r, progressColor.g = g, progressColor.b = b, progressColor.a = a; }
+		void ProgressBar::setProgressColor(const int r, const int g, const int b, const int a) { progressColor.r = r, progressColor.g = g, progressColor.b = b, progressColor.a = a; }
 
 	    void ProgressBar::modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa)
 		{
@@ -19,7 +19,7 @@ namespace DapperUI
 			shadowColor.r = sr, shadowColor.g = sg, shadowColor.b = sb, shadowColor.a = sa;
 		}
 
-		void ProgressBar::increaseByIntPercent(int percentage)
+		void ProgressBar::increaseByIntPercent(const int percentage)
 		{
 			progressPercentage += percentage;
 		}

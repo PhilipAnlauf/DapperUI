@@ -3,6 +3,9 @@
 #include <memory>
 #include <utility>
 
+//Function called when a new element is created
+//TODO: Add to dapper core or element manager
+
 namespace DapperUI
 {
     template <typename T, typename... Args>

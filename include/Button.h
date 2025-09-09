@@ -34,8 +34,8 @@ namespace DapperUI
         void modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa);
         void modifyOutline(const int& thickness, const int& otr, const int& otg, const int& otb, const int& ota=255);
         void setText(const int& offsetX=0, const int& offsetY=0, const std::string& text="", const int& ptsize=24);
-        void update(const float deltaTime);
-        void render(SDL_Renderer* renderer);
-        void handleEvent(const SDL_Event& event);
+        void update();
+        void render(SDL_Renderer* renderer) override;
+        void handleEvent(const SDL_Event& event) override;
     };
 }

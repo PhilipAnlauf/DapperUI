@@ -4,13 +4,13 @@
 
 namespace DapperUI
 {
-		Rectangle::Rectangle (int bx, int by, int bw, int bh, int ot)
+		Rectangle::Rectangle (const int bx, const int by, const int bw, const int bh, const int ot)
 		{
 			x = bx, y = by, w = bw, h = bh, outlineThickness = ot;
 			rect.x = bx, rect.y = by, rect.h = bh, rect.w = bw;
 		}
 
-		void Rectangle::setIdleColor(int r, int g, int b, int a) { idleColor.r = r, idleColor.g = g, idleColor.b = b, idleColor.a = a; }
+		void Rectangle::setIdleColor(const int r, const int g, const int b, const int a) { idleColor.r = r, idleColor.g = g, idleColor.b = b, idleColor.a = a; }
 
 	    void Rectangle::modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa)
 		{

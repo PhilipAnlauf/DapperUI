@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DapperUI.h"
+//Change to: #include "DapperUI/DapperUI.h" When using in directory outside of the DapperUI directory
 
 using namespace std;
 

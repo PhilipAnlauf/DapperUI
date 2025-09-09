@@ -8,7 +8,7 @@
 
 namespace DapperUI
 {
-		Button::Button (int bx, int by, int bw, int bh, int ot)
+		Button::Button (const int bx, const int by, const int bw, const int bh, const int ot)
 		{
 			x = bx, y = by, w = bw, h = bh, outlineThickness = ot;
 			rect.x = bx, rect.y = by, rect.h = bh, rect.w = bw;
@@ -19,9 +19,9 @@ namespace DapperUI
 			textColor.r = r, textColor.g = g, textColor.b = b;
 		}
 
-		void Button::setIdleColor(int r, int g, int b, int a) { idleColor.r = r, idleColor.g = g, idleColor.b = b, idleColor.a = a; }
+		void Button::setIdleColor(const int r, const int g, const int b, const int a) { idleColor.r = r, idleColor.g = g, idleColor.b = b, idleColor.a = a; }
 
-		void Button::setActiveColor(int r, int g, int b, int a) { activeColor.r = r, activeColor.g = g, activeColor.b = b, activeColor.a = a; }
+		void Button::setActiveColor(const int r, const int g, const int b, const int a) { activeColor.r = r, activeColor.g = g, activeColor.b = b, activeColor.a = a; }
 
 	    void Button::modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa)
 		{

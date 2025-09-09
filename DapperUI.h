@@ -1,5 +1,7 @@
 #pragma once
 
+//Include for all .h files
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 

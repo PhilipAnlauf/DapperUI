@@ -4,4 +4,5 @@ project(DapperUIProduction)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(DapperUIProduction main.cpp
-        main.cpp)
+        main.cpp
+        include/DapperCore.h)

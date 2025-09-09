@@ -3,7 +3,6 @@
 #include <string>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include <functional>
 #include "UIElement.h"
 
 namespace DapperUI
@@ -25,10 +24,10 @@ namespace DapperUI
 	public:
 		Rectangle(int bx, int by, int bw, int bh, int ot = 0);
 
-		void update(const float deltaTime);
+		void update();
 		void setIdleColor(int r, int g, int b, int a);
 		void modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa);
 		void modifyOutline(const int& thickness, const int& otr, const int& otg, const int& otb, const int& ota=255);
-		void render(SDL_Renderer* renderer);
+		void render(SDL_Renderer* renderer) override;
 	};
 }

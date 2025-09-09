@@ -1,4 +1,6 @@
 #pragma once
+#include <utility>
+
 #include "ElementManager.h"
 
 namespace DapperUI
@@ -6,6 +8,8 @@ namespace DapperUI
 	class DapperCore
 	{
 		private:
+			Uint32 lastTime = SDL_GetTicks();
+			float deltaTime = 0.0f;
 			int appW, appH;
 			std::string appName;
 			SDL_Color backgroundColor = {255,255,255,255 };
@@ -17,14 +21,13 @@ namespace DapperUI
 			SDL_Window* window;
 			static inline SDL_Renderer* renderer;
 
-			void setBackgroundColor(int r, int g, int b)
+			void setBackgroundColor(const int r, const int g, const int b)
 			{
 				backgroundColor.r = r, backgroundColor.g = g, backgroundColor.b = b;
 			}
 
 			DapperCore() : appW(800), appH(600), appName("DapperUI Application")
 			{
-				TTF_Init();
 				running = true;
 				elementManager = new ElementManager();
 				SDL_Init(SDL_INIT_VIDEO);
@@ -34,7 +37,7 @@ namespace DapperUI
 				SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 			}
 
-			DapperCore(int appW, int appH, const std::string& appN): appW(appW), appH(appH), appName(appN)
+			DapperCore(const int appW, const int appH, std::string  appN): appW(appW), appH(appH), appName(std::move(appN))
 			{
 				running = true;
 				elementManager = new ElementManager();
@@ -59,7 +62,7 @@ namespace DapperUI
 				SDL_Quit();
 			}
 
-			bool update(float deltaTime)
+			bool update()
 			{
 				SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 				SDL_RenderClear(renderer);
@@ -78,11 +81,15 @@ namespace DapperUI
 					elementManager->handleEvents(e);
 				}
 
+				const Uint32 currentTime = SDL_GetTicks();
+				deltaTime = (currentTime - lastTime) / 500.0f;
+				lastTime = currentTime;
 				elementManager->updateObjects(deltaTime);
+
 				return running;
 			}
 
-			void render()
+			static void render()
 			{
 				SDL_RenderClear(renderer);
 				elementManager->renderObjects(renderer);

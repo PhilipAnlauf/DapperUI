@@ -1,10 +1,9 @@
 #include "../include/Checkbox.h"
 #include "../include/UIElement.h"
-#include <iostream>
 
 namespace DapperUI
 {
-	Checkbox::Checkbox (int bx, int by, int size, int ot)
+	Checkbox::Checkbox (const int bx, const int by, const int size, const int ot)
 	{
 		x = bx, y = by, w = size, h=size, outlineThickness = ot;
 		rect.x = bx, rect.y = by, rect.h = size, rect.w = size;
@@ -12,9 +11,9 @@ namespace DapperUI
 		activeColor.r = 0, activeColor.g = 255, activeColor.b = 0, activeColor.a = 255;
 	}
 
-	void Checkbox::setIdleColor(int r, int g, int b, int a) { idleColor.r = r, idleColor.g = g, idleColor.b = b, idleColor.a = a; }
+	void Checkbox::setIdleColor(const int r, const int g, const int b, const int a) { idleColor.r = r, idleColor.g = g, idleColor.b = b, idleColor.a = a; }
 
-	void Checkbox::setActiveColor(int r, int g, int b, int a) { activeColor.r = r, activeColor.g = g, activeColor.b = b, activeColor.a = a; }
+	void Checkbox::setActiveColor(const int r, const int g, const int b, const int a) { activeColor.r = r, activeColor.g = g, activeColor.b = b, activeColor.a = a; }
 
 	void Checkbox::modifyShadow(const int& offsetX, const int& offsetY, const int& sr, const int& sg, const int& sb, const int& sa)
 	{

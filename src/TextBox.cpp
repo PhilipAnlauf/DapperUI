@@ -1,5 +1,4 @@
 #include "../include/TextBox.h"
-#include <iostream>
 
 namespace DapperUI
 {
@@ -35,10 +34,10 @@ namespace DapperUI
 			{
 				font = TTF_OpenFont("Roboto.ttf", ptsize);
 				if (!font) {
-					std::cerr << "Failed to open font: " << TTF_GetError() << std::endl;
+					//std::cerr << "Failed to open font: " << TTF_GetError() << std::endl;
 					return;
 				} else {
-					std::cout << "Font loaded successfully!" << std::endl;
+					//std::cout << "Font loaded successfully!" << std::endl;
 				}
 			}
 

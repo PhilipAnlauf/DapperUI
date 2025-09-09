@@ -2,7 +2,6 @@
 
 #include "UIElement.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <functional>
 
@@ -39,7 +38,7 @@ namespace DapperUI
 
 			void modifyOutline(const int& thickness, const int& otr, const int& otg, const int& otb, const int& ota=255);
 
-			void update(const float deltaTime) override;
+			void update();
 
 			void render(SDL_Renderer* renderer) override;
 
